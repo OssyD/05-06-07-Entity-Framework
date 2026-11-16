@@ -17,5 +17,9 @@ namespace FailSafeRentals.ConsoleApp.Models
 
         public int Milage { get; set; }
         public bool NeedService { get; set; }
+
+        public int RentelStationId { get; set; }
+
+        public RentelStation RentelStation { get; set; } = null!;
     }
 }
