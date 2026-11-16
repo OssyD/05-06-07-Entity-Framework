@@ -24,5 +24,7 @@ namespace FailSafeRentals.ConsoleApp.Models
         public RentalStation RentalStation { get; set; } = null!;
 
         public List<DamageReport> DamageReports { get; set; } = [];
+
+        public List<MaintenanceTag> MaintenanceTags { get; set; } = [];
     }
 }

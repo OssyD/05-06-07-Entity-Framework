@@ -13,6 +13,7 @@ public class FailSafeRentalsDbContext : DbContext
     public DbSet<RentalStation> RentalStations { get; set; } = null!;
     public DbSet<DamageReport> DamageReports { get; set; } = null!;
     public DbSet<FleetVehicle> FleetVehicles { get; set; } = null!;
+    public DbSet<MaintenanceTag> MaintenanceTags { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -70,6 +71,7 @@ public class FailSafeRentalsDbContext : DbContext
             .WithMany(fv => fv.DamageReports)
             .HasForeignKey(dr => dr.FleetVehicleId)
             .OnDelete(DeleteBehavior.Restrict);
+
 
     }
 }

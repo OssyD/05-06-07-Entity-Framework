@@ -16,7 +16,7 @@ partial class FailSafeRentalsDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261116100755_Restrict";
+    public override string LastMigrationId => "20261116103820_tags";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -171,6 +171,24 @@ partial class FailSafeRentalsDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("FleetVehicles");
             });
 
+        modelBuilder.Entity("FailSafeRentals.ConsoleApp.Models.MaintenanceTag", b =>
+            {
+                var id = b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
+
+                b.Property<string>("TagName")
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .HasColumnType("nvarchar(40)");
+
+                b.HasKey("Id");
+
+                b.ToTable("MaintenanceTags");
+            });
+
         modelBuilder.Entity("FailSafeRentals.ConsoleApp.Models.Rental", b =>
             {
                 var id = b.Property<int>("Id")
@@ -277,6 +295,21 @@ partial class FailSafeRentalsDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("Vehicles");
             });
 
+        modelBuilder.Entity("FleetVehicleMaintenanceTag", b =>
+            {
+                b.Property<int>("FleetVehiclesId")
+                    .HasColumnType("int");
+
+                b.Property<int>("MaintenanceTagsId")
+                    .HasColumnType("int");
+
+                b.HasKey("FleetVehiclesId", "MaintenanceTagsId");
+
+                b.HasIndex("MaintenanceTagsId");
+
+                b.ToTable("FleetVehicleMaintenanceTag");
+            });
+
         modelBuilder.Entity("ExtraFeatureVehicle", b =>
             {
                 b.HasOne("FailSafeRentals.ConsoleApp.Models.ExtraFeature", null)
@@ -331,6 +364,21 @@ partial class FailSafeRentalsDbContextModelSnapshot : ModelSnapshot
                 b.Navigation("Customer");
 
                 b.Navigation("Vehicle");
+            });
+
+        modelBuilder.Entity("FleetVehicleMaintenanceTag", b =>
+            {
+                b.HasOne("FailSafeRentals.ConsoleApp.Models.FleetVehicle", null)
+                    .WithMany()
+                    .HasForeignKey("FleetVehiclesId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("FailSafeRentals.ConsoleApp.Models.MaintenanceTag", null)
+                    .WithMany()
+                    .HasForeignKey("MaintenanceTagsId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
             });
 
         modelBuilder.Entity("FailSafeRentals.ConsoleApp.Models.Customer", b =>
