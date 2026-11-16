@@ -10,6 +10,9 @@ public class FailSafeRentalsDbContext : DbContext
     public DbSet<Vehicle> Vehicles { get; set; } = null!;
     public DbSet<Rental> Rentals { get; set; } = null!;
     public DbSet<ExtraFeature> ExtraFeatures { get; set; } = null!;
+    public DbSet<RentalStation> RentalStations { get; set; } = null!;
+    public DbSet<DamageReport> DamageReports { get; set; } = null!;
+    public DbSet<FleetVehicle> FleetVehicles { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -39,5 +42,34 @@ public class FailSafeRentalsDbContext : DbContext
             .HasOne(r => r.Customer)
             .WithMany(c => c.Rentals)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<RentalStation>()
+            .HasIndex(rs => rs.StationCode)
+            .IsUnique();
+
+        modelBuilder.Entity<FleetVehicle>()
+            .HasIndex(fv => fv.RegistrationNumber)
+            .IsUnique();
+
+        modelBuilder.Entity<DamageReport>()
+            .Property(dr => dr.EstimatedCost)
+            .HasPrecision(10, 2);
+
+        modelBuilder.Entity<DamageReport>()
+            .Property<DateTime>("AuditLoggedAt")
+            .HasDefaultValueSql("GETUTCDATE()");
+
+        modelBuilder.Entity<FleetVehicle>()
+            .HasOne(fv => fv.RentalStation)
+            .WithMany(rs => rs.FleetVehicles)
+            .HasForeignKey(fv => fv.RentalStationId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<DamageReport>()
+            .HasOne(dr => dr.FleetVehicle)
+            .WithMany(fv => fv.DamageReports)
+            .HasForeignKey(dr => dr.FleetVehicleId)
+            .OnDelete(DeleteBehavior.Restrict);
+
     }
 }

@@ -15,11 +15,14 @@ namespace FailSafeRentals.ConsoleApp.Models
         [Required, MaxLength(50)]
         public string MakeAndModel { get; set; } = null!;
 
-        public int Milage { get; set; }
-        public bool NeedService { get; set; }
+        [Required]
+        public int MileageKm { get; set; }
+        public bool NeedsService { get; set; }
 
-        public int RentelStationId { get; set; }
+        public int RentalStationId { get; set; }
 
-        public RentelStation RentelStation { get; set; } = null!;
+        public RentalStation RentalStation { get; set; } = null!;
+
+        public List<DamageReport> DamageReports { get; set; } = [];
     }
 }
