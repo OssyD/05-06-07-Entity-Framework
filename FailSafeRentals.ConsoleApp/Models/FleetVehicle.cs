@@ -13,7 +13,12 @@ namespace FailSafeRentals.ConsoleApp.Models
         public string RegistrationNumber { get; set; } = null!;
 
         [Required, MaxLength(50)]
-        public string MakeAndModel { get; set; } = null!;
+        public string Make { get; set; } = null!;
+        [Required, MaxLength(50)]
+        public string Model { get; set; } = null!;
+
+        //[Required, MaxLength(50)]
+        //public string MakeAndModel { get; set; } = null!;
 
         [Required]
         public int MileageKm { get; set; }

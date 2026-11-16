@@ -16,7 +16,7 @@ partial class FailSafeRentalsDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261116103820_tags";
+    public override string LastMigrationId => "20261116112714_splitmakemodel";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -142,13 +142,18 @@ partial class FailSafeRentalsDbContextModelSnapshot : ModelSnapshot
 
                 SqlServerPropertyBuilderExtensions.UseIdentityColumn(id);
 
-                b.Property<string>("MakeAndModel")
+                b.Property<string>("Make")
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnType("nvarchar(50)");
 
                 b.Property<int>("MileageKm")
                     .HasColumnType("int");
+
+                b.Property<string>("Model")
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnType("nvarchar(50)");
 
                 b.Property<bool>("NeedsService")
                     .HasColumnType("bit");
@@ -255,6 +260,29 @@ partial class FailSafeRentalsDbContextModelSnapshot : ModelSnapshot
                     .IsUnique();
 
                 b.ToTable("RentalStations");
+
+                b.HasData(
+                    new
+                    {
+                        Id = 1,
+                        Address = "landvettern 1",
+                        City = "Gothenburg",
+                        StationCode = "GOT-01"
+                    },
+                    new
+                    {
+                        Id = 2,
+                        Address = "Sveavägen 2",
+                        City = "Stockholm",
+                        StationCode = "STO-02"
+                    },
+                    new
+                    {
+                        Id = 3,
+                        Address = "Third Street 3",
+                        City = "Malmö",
+                        StationCode = "MAL-03"
+                    });
             });
 
         modelBuilder.Entity("FailSafeRentals.ConsoleApp.Models.Vehicle", b =>
