@@ -18,11 +18,9 @@ public class FailSafeRentalsDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(
-            @"Server=DESKTOP-0Q2CI4E\MSSQLSERVER01;Database=FailSafeRentals;Trusted_Connection=True;TrustServerCertificate=True;");
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=FailSafeRentals;Trusted_Connection=True;")
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-0Q2CI4E\MSSQLSERVER01;Database=FailSafeRentals;Trusted_Connection=True;TrustServerCertificate=True;")
                 .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
                 .EnableSensitiveDataLogging() // Endast i dev – visar parametervärden!
                 ;
