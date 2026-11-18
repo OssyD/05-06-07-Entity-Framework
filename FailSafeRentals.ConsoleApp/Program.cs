@@ -64,7 +64,8 @@ if (!_db.Vehicles.Any())
 //LäsInFrånFil();
 //LäggTillTakbox();
 //await RekommenderaEfterVädret();
-SäkertVsLivsfarligt();
+//SäkertVsLivsfarligt();
+ExecuteStoredProcedure(1);
 
 
 if (Debugger.IsAttached)
@@ -341,6 +342,27 @@ void SäkertVsLivsfarligt()
 
     // SÄKERT 2: FromSqlRaw med platshållare {0}
     var safe2 = _db.Vehicles.FromSqlRaw("SELECT * FROM Vehicles WHERE Brand = {0}", brandInput).ToList();
+
+}
+
+void ExecuteStoredProcedure(int id)
+{
+    using var _db = new FailSafeRentalsDbContext();
+
+    if (id <= 0)
+    {
+        Console.WriteLine("Ogiltigt ID. Ange ett positivt heltal.");
+        return;
+    }
+
+    var cars = _db.FleetVehicles
+    .FromSql($"EXEC dbo.usp_GetFleetVehiclesFromStation @StationId = {id}")
+    .ToList();
+
+    foreach (var car in cars)
+    {
+        Console.WriteLine($"- {car.Id} {car.Make} ({car.RegistrationNumber})");
+    }
 
 }
 
